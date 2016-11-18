@@ -19,6 +19,14 @@ class OkHttp3ClientTest {
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
     }
 
+    @Test
+    fun itUsesHttpAsTheDefaultSchema() {
+        val response = okHttpClient.get("httpbin.org/get")!!
+
+        val parsedOutput = parseJson(response.body)
+        assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
+    }
+
     private fun parseJson(jsonString: String): JsonObject {
         return Parser().parse(jsonString.byteInputStream()) as JsonObject
     }

@@ -11,8 +11,11 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAGetRequest() {
-        val output = okHttpClient.get("http://httpbin.org/get")!!
-        val parsedOutput = parseJson(output)
+        val response = okHttpClient.get("http://httpbin.org/get")!!
+
+        assertThat(response.status, equalTo(200))
+        assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
+        val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
     }
 

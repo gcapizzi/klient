@@ -4,11 +4,13 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.containsSubstring
 import com.natpryce.hamkrest.equalTo
 import io.github.gcapizzi.http.client.OkHttp3Client
+import io.github.gcapizzi.http.formatter.DefaultResponseFormatter
 import org.junit.Test
 
 class HttpAppEndToEndTest {
     private val httpClient = OkHttp3Client()
-    private val httpApp = HttpApp(httpClient)
+    private val responseFormatter = DefaultResponseFormatter()
+    private val httpApp = HttpApp(httpClient, responseFormatter)
 
     @Test
     fun itMakesAnHttpRequestAndPrintsTheResults() {

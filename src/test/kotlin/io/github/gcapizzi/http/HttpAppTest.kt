@@ -4,13 +4,15 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import io.github.gcapizzi.http.client.HttpClient
 import io.github.gcapizzi.http.client.HttpResponse
+import io.github.gcapizzi.http.formatter.ResponseFormatter
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 
 class HttpAppTest {
     private val httpClient = mock(HttpClient::class.java)
-    private val httpApp = HttpApp(httpClient)
+    private val responseFormatter = mock(ResponseFormatter::class.java)
+    private val httpApp = HttpApp(httpClient, responseFormatter)
 
     @Test
     fun itReturnsAnErrorWhenCalledWithNoArguments() {
@@ -20,16 +22,10 @@ class HttpAppTest {
 
     @Test
     fun itMakesAnHttpGetRequestAndReturnsTheResults() {
-        val headers = mapOf("Foo-Header" to listOf("foo"), "Bar-Header" to listOf("bar", "baz"))
-        val response = HttpResponse(404, headers, "the response body")
+        val response = HttpResponse(404, mapOf(), "body")
         given(httpClient.get("http://example.com")).willReturn(response)
+        given(responseFormatter.format(response)).willReturn("the output")
 
-        val output = httpApp.run(arrayOf("GET", "http://example.com"))
-        val (preambleOutput, bodyOutput) = output.split("\n\n")
-        val (statusLineOutput, headersOutput) = preambleOutput.split("\n", limit = 2)
-
-        assertThat(statusLineOutput, equalTo("HTTP/1.1 404 Not Found"))
-        assertThat(headersOutput, equalTo("foo-header: foo\nbar-header: bar, baz"))
-        assertThat(bodyOutput, equalTo("the response body"))
+        assertThat(httpApp.run(arrayOf("GET", "http://example.com")), equalTo("the output"))
     }
 }

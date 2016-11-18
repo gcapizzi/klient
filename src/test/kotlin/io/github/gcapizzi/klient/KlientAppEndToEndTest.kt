@@ -1,20 +1,20 @@
-package io.github.gcapizzi.http
+package io.github.gcapizzi.klient
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.containsSubstring
 import com.natpryce.hamkrest.equalTo
-import io.github.gcapizzi.http.client.OkHttp3Client
-import io.github.gcapizzi.http.formatter.DefaultResponseFormatter
+import io.github.gcapizzi.klient.http.OkHttp3Client
+import io.github.gcapizzi.klient.formatter.DefaultResponseFormatter
 import org.junit.Test
 
-class HttpAppEndToEndTest {
+class KlientAppEndToEndTest {
     private val httpClient = OkHttp3Client()
     private val responseFormatter = DefaultResponseFormatter()
-    private val httpApp = HttpApp(httpClient, responseFormatter)
+    private val klientApp = KlientApp(httpClient, responseFormatter)
 
     @Test
     fun itMakesAnHttpRequestAndPrintsTheResults() {
-        val output = httpApp.run(arrayOf("GET", "https://api.github.com/users/gcapizzi"))
+        val output = klientApp.run(arrayOf("GET", "https://api.github.com/users/gcapizzi"))
         val (preamble, body) = output.split("\n\n")
         val (statusLine, headers) = preamble.split("\n", limit = 2)
 

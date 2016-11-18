@@ -1,8 +1,8 @@
-package io.github.gcapizzi.http.formatter
+package io.github.gcapizzi.klient.formatter
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import io.github.gcapizzi.http.client.HttpResponse
+import io.github.gcapizzi.klient.http.HttpResponse
 import org.junit.Test
 
 class DefaultResponseFormatterTest {

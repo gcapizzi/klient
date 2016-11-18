@@ -1,4 +1,4 @@
-package io.github.gcapizzi.http.client
+package io.github.gcapizzi.klient.http
 
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser

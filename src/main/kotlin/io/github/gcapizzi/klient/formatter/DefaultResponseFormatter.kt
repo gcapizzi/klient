@@ -1,6 +1,6 @@
-package io.github.gcapizzi.http.formatter
+package io.github.gcapizzi.klient.formatter
 
-import io.github.gcapizzi.http.client.HttpResponse
+import io.github.gcapizzi.klient.http.HttpResponse
 
 class DefaultResponseFormatter : ResponseFormatter {
     override fun format(response: HttpResponse): String {

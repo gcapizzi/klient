@@ -1,4 +1,4 @@
-package io.github.gcapizzi.http.client
+package io.github.gcapizzi.klient.http
 
 import okhttp3.OkHttpClient
 import okhttp3.Request

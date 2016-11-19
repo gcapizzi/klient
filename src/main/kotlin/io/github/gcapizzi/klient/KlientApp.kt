@@ -1,7 +1,7 @@
 package io.github.gcapizzi.klient
 
-import io.github.gcapizzi.klient.http.HttpClient
 import io.github.gcapizzi.klient.formatter.ResponseFormatter
+import io.github.gcapizzi.klient.http.HttpClient
 
 class KlientApp(val httpClient: HttpClient, val responseFormatter: ResponseFormatter) {
     fun run(args: Array<String>): String {

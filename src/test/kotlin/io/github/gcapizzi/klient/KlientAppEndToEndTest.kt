@@ -2,10 +2,9 @@ package io.github.gcapizzi.klient
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.containsSubstring
-import com.natpryce.hamkrest.equalTo
 import com.natpryce.hamkrest.startsWith
-import io.github.gcapizzi.klient.http.OkHttp3Client
 import io.github.gcapizzi.klient.formatter.DefaultResponseFormatter
+import io.github.gcapizzi.klient.http.OkHttp3Client
 import org.junit.Test
 
 class KlientAppEndToEndTest {

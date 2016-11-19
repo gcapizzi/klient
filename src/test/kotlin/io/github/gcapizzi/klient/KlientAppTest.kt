@@ -2,9 +2,9 @@ package io.github.gcapizzi.klient
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import io.github.gcapizzi.klient.formatter.ResponseFormatter
 import io.github.gcapizzi.klient.http.HttpClient
 import io.github.gcapizzi.klient.http.HttpResponse
-import io.github.gcapizzi.klient.formatter.ResponseFormatter
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock

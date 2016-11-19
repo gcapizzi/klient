@@ -24,12 +24,11 @@ class KlientApp(val httpClient: HttpClient, val responseFormatter: ResponseForma
     }
 
     private fun buildBody(dataFields: List<String>): Map<String, String>? {
-        val body = dataFields.map { buildPair(it) }.let { mapOf(*it.toTypedArray()) }
-        if (body.isEmpty()) {
+        if (dataFields.isEmpty()) {
             return null
-        } else {
-            return body
         }
+
+        return dataFields.map { buildPair(it) }.toMap()
     }
 
     private fun buildPair(string: String): Pair<String, String> {

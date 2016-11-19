@@ -24,6 +24,8 @@ class DefaultResponseFormatter : ResponseFormatter {
     }
 
     private val httpStatuses = mapOf(
+            // 1xx Informational
+
             100 to "Continue",
             101 to "Switching Protocols",
             102 to "Processing",

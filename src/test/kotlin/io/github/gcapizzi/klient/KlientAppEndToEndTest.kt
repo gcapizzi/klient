@@ -3,6 +3,7 @@ package io.github.gcapizzi.klient
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.containsSubstring
 import com.natpryce.hamkrest.equalTo
+import com.natpryce.hamkrest.startsWith
 import io.github.gcapizzi.klient.http.OkHttp3Client
 import io.github.gcapizzi.klient.formatter.DefaultResponseFormatter
 import org.junit.Test
@@ -15,11 +16,10 @@ class KlientAppEndToEndTest {
     @Test
     fun itMakesAnHttpRequestAndPrintsTheResults() {
         val output = klientApp.run(arrayOf("GET", "https://api.github.com/users/gcapizzi"))
-        val (preamble, body) = output.split("\n\n")
-        val (statusLine, headers) = preamble.split("\n", limit = 2)
+        val (headers, body) = output.split("\n\n")
 
-        assertThat(statusLine, equalTo("HTTP/1.1 200 OK"))
-        assertThat(headers, containsSubstring("content-type: application/json; charset=utf-8"))
+        assertThat(headers, startsWith("HTTP/1.1 200 OK\n"))
+        assertThat(headers, containsSubstring("content-type: application/json; charset=utf-8\n"))
         assertThat(body, containsSubstring("\"login\":\"gcapizzi\""))
     }
 }

@@ -21,11 +21,11 @@ class KlientAppTest {
     }
 
     @Test
-    fun itMakesAnHttpGetRequestAndReturnsTheResults() {
-        val response = HttpResponse(404, mapOf(), "body")
-        given(httpClient.get("http://example.com")).willReturn(response)
+    fun itMakesAnHttpRequestAndReturnsTheResults() {
+        val response = HttpResponse(200, mapOf(), "body")
+        given(httpClient.call(HttpRequest("METHOD", "http://url"))).willReturn(response)
         given(responseFormatter.format(response)).willReturn("the output")
 
-        assertThat(klientApp.run(arrayOf("GET", "http://example.com")), equalTo("the output"))
+        assertThat(klientApp.run(arrayOf("METHOD", "http://url")), equalTo("the output"))
     }
 }

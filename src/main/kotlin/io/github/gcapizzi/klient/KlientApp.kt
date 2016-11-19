@@ -9,8 +9,8 @@ class KlientApp(val httpClient: HttpClient, val responseFormatter: ResponseForma
             return "klient: error: too few arguments"
         }
 
-        val url = args[1]
-        val response = httpClient.get(url)!!
+        val (method, url) = args
+        val response = httpClient.call(HttpRequest(method, url))!!
 
         return responseFormatter.format(response)
     }

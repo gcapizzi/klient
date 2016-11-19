@@ -1,4 +1,4 @@
-package io.github.gcapizzi.klient.formatter
+package io.github.gcapizzi.klient.responseformatter
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo

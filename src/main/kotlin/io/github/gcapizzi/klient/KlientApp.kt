@@ -1,38 +1,17 @@
 package io.github.gcapizzi.klient
 
-import io.github.gcapizzi.klient.formatter.ResponseFormatter
 import io.github.gcapizzi.klient.http.HttpClient
+import io.github.gcapizzi.klient.requestbuilder.RequestBuilder
+import io.github.gcapizzi.klient.responseformatter.ResponseFormatter
 
-class KlientApp(val httpClient: HttpClient, val responseFormatter: ResponseFormatter) {
+class KlientApp(val httpClient: HttpClient, val requestBuilder: RequestBuilder, val responseFormatter: ResponseFormatter) {
     fun run(args: Array<String>): String {
         if (args.isEmpty()) {
             return "klient: error: too few arguments"
         }
 
-        val request = buildRequest(args)
+        val request = requestBuilder.build(args)
         val response = httpClient.call(request)!!
         return responseFormatter.format(response)
-    }
-
-    private fun buildRequest(args: Array<String>): HttpRequest {
-        val method = args[0]
-        val url = args[1]
-        val dataFields = args.drop(2)
-        val body = buildBody(dataFields)
-        val request = HttpRequest(method, url, body)
-        return request
-    }
-
-    private fun buildBody(dataFields: List<String>): Map<String, String>? {
-        if (dataFields.isEmpty()) {
-            return null
-        }
-
-        return dataFields.map { buildPair(it) }.toMap()
-    }
-
-    private fun buildPair(string: String): Pair<String, String> {
-        val (key, value) = string.split("=")
-        return Pair(key, value)
     }
 }

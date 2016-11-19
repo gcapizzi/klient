@@ -10,9 +10,13 @@ class DefaultRequestBuilderTest {
 
     @Test
     fun itBuildsAnHttpRequestFromTheListOfCommandLineArgs() {
-        val args = arrayOf("METHOD", "http://url")
-        val httpRequest = requestBuilder.build(args)
+        val httpRequest = requestBuilder.build(arrayOf("METHOD", "http://url"))
+        assertThat(httpRequest, equalTo(HttpRequest("METHOD", "http://url")))
+    }
 
+    @Test
+    fun itUsesHttpAsTheDefaultSchema() {
+        val httpRequest = requestBuilder.build(arrayOf("METHOD", "url"))
         assertThat(httpRequest, equalTo(HttpRequest("METHOD", "http://url")))
     }
 

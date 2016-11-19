@@ -16,7 +16,7 @@ class KlientAppEndToEndTest {
 
     @Test
     fun itMakesAnHttpRequestAndPrintsTheResults() {
-        val output = klientApp.run(arrayOf("GET", "https://api.github.com/users/gcapizzi"))
+        val output = klientApp.run(arrayOf("GET", "api.github.com/users/gcapizzi"))
         val (headers, body) = output.split("\n\n")
 
         assertThat(headers, startsWith("HTTP/1.1 200 OK\n"))

@@ -22,12 +22,14 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAPostRequest() {
-        val response = okHttpClient.call(HttpRequest("POST", "http://httpbin.org/post"))!!
+        val response = okHttpClient.call(HttpRequest("POST", "http://httpbin.org/post", mapOf("foo" to "bar")))!!
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
         val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/post"))
+        val json = parsedOutput["json"] as JsonObject
+        assertThat(json["foo"] as String, equalTo("bar"))
     }
 
     @Test

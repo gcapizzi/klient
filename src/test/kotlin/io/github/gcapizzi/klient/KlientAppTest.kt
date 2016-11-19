@@ -28,4 +28,16 @@ class KlientAppTest {
 
         assertThat(klientApp.run(arrayOf("METHOD", "http://url")), equalTo("the output"))
     }
+
+    @Test
+    fun itAllowsToSpecifyDataFields() {
+        val response = HttpResponse(200, mapOf(), "body")
+        val expectedBody = mapOf("foo" to "1", "bar" to "2", "baz" to "3")
+        given(httpClient.call(HttpRequest("METHOD", "http://url", body = expectedBody))).willReturn(response)
+        given(responseFormatter.format(response)).willReturn("the output")
+
+        val output = klientApp.run(arrayOf("METHOD", "http://url", "foo=1", "bar=2", "baz=3"))
+
+        assertThat(output, equalTo("the output"))
+    }
 }

@@ -1,5 +1,6 @@
 package io.github.gcapizzi.klient.http
 
+import com.beust.klaxon.JsonObject
 import io.github.gcapizzi.klient.HttpRequest
 import okhttp3.*
 
@@ -19,12 +20,15 @@ class OkHttp3Client : HttpClient {
         if (request.method == "GET") {
             okHttpRequestBuilder = okHttpRequestBuilder.get()
         } else {
-            val requestBody = RequestBody.create(MediaType.parse("application/json"), "")
+            val requestBody = RequestBody.create(MediaType.parse("application/json"), toJson(request.body))
             okHttpRequestBuilder = okHttpRequestBuilder.post(requestBody)
         }
 
-        val okHttpRequest = okHttpRequestBuilder.build()
-        return okHttpRequest
+        return okHttpRequestBuilder.build()
+    }
+
+    private fun toJson(body: Map<String, String>?): String {
+        return JsonObject(body.orEmpty()).toJsonString()
     }
 
     private fun buildHttpResponse(okHttpResponse: Response): HttpResponse {

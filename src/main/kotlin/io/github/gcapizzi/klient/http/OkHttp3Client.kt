@@ -14,7 +14,8 @@ class OkHttp3Client : HttpClient {
     }
 
     private fun buildOkHttpRequest(request: HttpRequest): Request? {
-        var okHttpRequestBuilder = Request.Builder().url(request.url)
+        val url = normalizeUrl(request.url) ?: return null
+        var okHttpRequestBuilder = Request.Builder().url(url)
 
         if (request.method == "GET") {
             okHttpRequestBuilder = okHttpRequestBuilder.get()
@@ -24,6 +25,10 @@ class OkHttp3Client : HttpClient {
         }
 
         return okHttpRequestBuilder.build()
+    }
+
+    private fun normalizeUrl(url: String): HttpUrl? {
+        return HttpUrl.parse(url) ?: HttpUrl.parse("http:$url") ?: HttpUrl.parse("http://$url")
     }
 
     private fun toJson(body: Map<String, String>?): String {

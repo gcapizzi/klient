@@ -15,12 +15,6 @@ class DefaultRequestBuilderTest {
     }
 
     @Test
-    fun itUsesHttpAsTheDefaultSchema() {
-        val httpRequest = requestBuilder.build(arrayOf("METHOD", "url"))
-        assertThat(httpRequest, equalTo(HttpRequest("METHOD", "http://url")))
-    }
-
-    @Test
     fun itAllowsToSpecifyDataFields() {
         val args = arrayOf("METHOD", "http://url", "foo=1", "bar=2", "baz=3")
         val httpRequest = requestBuilder.build(args)

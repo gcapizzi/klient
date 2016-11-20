@@ -21,6 +21,20 @@ class OkHttp3ClientTest {
     }
 
     @Test
+    fun itUsesHttpAsTheDefaultSchema() {
+        var response: HttpResponse
+        var parsedOutput: JsonObject
+
+        response = okHttpClient.call(HttpRequest("GET", "httpbin.org/get"))!!
+        parsedOutput = parseJson(response.body)
+        assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
+
+        response = okHttpClient.call(HttpRequest("GET", "//httpbin.org/get"))!!
+        parsedOutput = parseJson(response.body)
+        assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
+    }
+
+    @Test
     fun itExecutesAPostRequest() {
         val response = okHttpClient.call(HttpRequest("POST", "http://httpbin.org/post", mapOf("foo" to "bar")))!!
 

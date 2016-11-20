@@ -1,7 +1,6 @@
 package io.github.gcapizzi.klient.http
 
 import com.beust.klaxon.JsonObject
-import io.github.gcapizzi.klient.HttpRequest
 import okhttp3.*
 
 class OkHttp3Client : HttpClient {

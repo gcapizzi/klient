@@ -1,6 +1,6 @@
 package io.github.gcapizzi.klient.requestbuilder
 
-import io.github.gcapizzi.klient.HttpRequest
+import io.github.gcapizzi.klient.http.HttpRequest
 
 class DefaultRequestBuilder : RequestBuilder {
     override fun build(args: Array<String>): HttpRequest {

@@ -3,6 +3,7 @@ package io.github.gcapizzi.klient
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import io.github.gcapizzi.klient.http.HttpClient
+import io.github.gcapizzi.klient.http.HttpRequest
 import io.github.gcapizzi.klient.http.HttpResponse
 import io.github.gcapizzi.klient.requestbuilder.RequestBuilder
 import io.github.gcapizzi.klient.responseformatter.ResponseFormatter

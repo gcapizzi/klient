@@ -4,7 +4,6 @@ import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import io.github.gcapizzi.klient.HttpRequest
 import org.junit.Test
 
 class OkHttp3ClientTest {

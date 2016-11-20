@@ -2,7 +2,7 @@ package io.github.gcapizzi.klient.requestbuilder
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import io.github.gcapizzi.klient.HttpRequest
+import io.github.gcapizzi.klient.http.HttpRequest
 import org.junit.Test
 
 class DefaultRequestBuilderTest {

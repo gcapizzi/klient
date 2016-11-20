@@ -28,7 +28,7 @@ class OkHttp3ClientTest {
     }
 
     @Test
-    fun itSupportsAddresssesStartingWithADoubleSlash() {
+    fun itSupportsAddressesStartingWithADoubleSlash() {
         val response = okHttpClient.call(HttpRequest("GET", "//httpbin.org/get")).unwrap()
         val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))

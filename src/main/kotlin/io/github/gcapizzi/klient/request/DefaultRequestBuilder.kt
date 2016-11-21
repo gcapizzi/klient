@@ -4,7 +4,7 @@ import io.github.gcapizzi.klient.http.HttpMethod
 import io.github.gcapizzi.klient.http.HttpRequest
 import io.github.gcapizzi.klient.util.Result
 
-class DefaultRequestBuilder : RequestBuilder {
+class DefaultRequestBuilder(val dataEncoder: DataEncoder) : RequestBuilder {
     override fun build(args: Array<String>): Result<HttpRequest> {
         if (args.size < 2) {
             return Result.Error(Exception("Too few arguments"))
@@ -17,12 +17,13 @@ class DefaultRequestBuilder : RequestBuilder {
         return Result.Ok(HttpRequest(method, url, body))
     }
 
-    private fun buildBody(dataFields: List<String>): Map<String, String>? {
+    private fun buildBody(dataFields: List<String>): String? {
         if (dataFields.isEmpty()) {
             return null
         }
 
-        return dataFields.map { buildPair(it) }.toMap()
+        val dataMap = dataFields.map { buildPair(it) }.toMap()
+        return dataEncoder.encode(dataMap)
     }
 
     private fun buildPair(string: String): Pair<String, String> {

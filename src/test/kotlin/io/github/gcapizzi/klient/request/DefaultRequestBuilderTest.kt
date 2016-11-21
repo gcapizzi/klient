@@ -6,9 +6,12 @@ import io.github.gcapizzi.klient.http.HttpMethod
 import io.github.gcapizzi.klient.http.HttpRequest
 import io.github.gcapizzi.klient.util.Result
 import org.junit.Test
+import org.mockito.BDDMockito.given
+import org.mockito.Mockito.mock
 
 class DefaultRequestBuilderTest {
-    private val requestBuilder = DefaultRequestBuilder()
+    private val dataEncoder = mock(DataEncoder::class.java)
+    private val requestBuilder = DefaultRequestBuilder(dataEncoder)
 
     @Test
     fun itReturnsAnErrorIfTooFewArguments() {
@@ -27,11 +30,13 @@ class DefaultRequestBuilderTest {
 
     @Test
     fun itAllowsToSpecifyDataFields() {
+        given(dataEncoder.encode(mapOf("foo" to "1", "bar" to "2", "baz" to "3"))).willReturn("JSON_ENCODED_DATA")
+
         val args = arrayOf("GET", "http://url", "foo=1", "bar=2", "baz=3")
         val httpRequest = requestBuilder.build(args).unwrap()
 
         assertThat(httpRequest.method, equalTo(HttpMethod.GET))
         assertThat(httpRequest.url, equalTo("http://url"))
-        assertThat(httpRequest.body, equalTo(mapOf("foo" to "1", "bar" to "2", "baz" to "3")))
+        assertThat(httpRequest.body, equalTo("JSON_ENCODED_DATA"))
     }
 }

@@ -1,13 +1,16 @@
 package io.github.gcapizzi.klient
 
 import io.github.gcapizzi.klient.http.OkHttp3Client
+import io.github.gcapizzi.klient.request.DataEncoder
 import io.github.gcapizzi.klient.request.DefaultRequestBuilder
+import io.github.gcapizzi.klient.request.JsonDataEncoder
 import io.github.gcapizzi.klient.response.DefaultResponseFormatter
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
     val httpClient = OkHttp3Client()
-    val requestBuilder = DefaultRequestBuilder()
+    val dataEncoder = JsonDataEncoder()
+    val requestBuilder = DefaultRequestBuilder(dataEncoder)
     val responseFormatter = DefaultResponseFormatter()
     val klientApp = KlientApp(httpClient, requestBuilder, responseFormatter)
 

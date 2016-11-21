@@ -31,17 +31,13 @@ class OkHttp3Client : HttpClient {
         }
     }
 
-    private fun jsonRequestBody(body: Map<String, String>?): RequestBody? {
-        return RequestBody.create(MediaType.parse("application/json"), toJson(body))
+    private fun jsonRequestBody(body: String?): RequestBody? {
+        return RequestBody.create(MediaType.parse("application/json"), body ?: "")
     }
 
     private fun normalizeUrl(url: String): Result<HttpUrl> {
         val normalizedUrl = HttpUrl.parse(url) ?: HttpUrl.parse("http:$url") ?: HttpUrl.parse("http://$url")
         return Result.of(normalizedUrl, Exception("Invalid URL"))
-    }
-
-    private fun toJson(body: Map<String, String>?): String {
-        return body?.let { JsonObject(body).toJsonString() } ?: ""
     }
 
     private fun executeOkHttpRequest(okHttpRequest: Request): Result<Response> {

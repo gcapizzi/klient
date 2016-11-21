@@ -61,7 +61,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAPostRequest() {
-        val response = okHttpClient.call(HttpRequest(HttpMethod.POST, "http://httpbin.org/post", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.POST, "http://httpbin.org/post", "{\"foo\":\"bar\"}")).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
@@ -81,7 +81,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAPutRequest() {
-        val response = okHttpClient.call(HttpRequest(HttpMethod.PUT, "http://httpbin.org/put", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.PUT, "http://httpbin.org/put", "{\"foo\":\"bar\"}")).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
@@ -92,7 +92,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAPatchRequest() {
-        val response = okHttpClient.call(HttpRequest(HttpMethod.PATCH, "http://httpbin.org/patch", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.PATCH, "http://httpbin.org/patch", "{\"foo\":\"bar\"}")).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
@@ -103,7 +103,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesADeleteRequest() {
-        val response = okHttpClient.call(HttpRequest(HttpMethod.DELETE, "http://httpbin.org/delete", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.DELETE, "http://httpbin.org/delete", "{\"foo\":\"bar\"}")).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))

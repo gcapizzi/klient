@@ -1,7 +1,7 @@
 package io.github.gcapizzi.klient.http
 
 import com.beust.klaxon.JsonObject
-import io.github.gcapizzi.klient.HttpMethod
+import io.github.gcapizzi.klient.http.HttpMethod
 import io.github.gcapizzi.klient.util.Result
 import okhttp3.*
 

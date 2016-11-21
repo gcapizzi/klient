@@ -1,4 +1,4 @@
-package io.github.gcapizzi.klient
+package io.github.gcapizzi.klient.http
 
 enum class HttpMethod {
     GET,

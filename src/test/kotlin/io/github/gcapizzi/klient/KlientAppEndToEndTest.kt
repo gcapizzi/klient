@@ -7,7 +7,6 @@ import com.natpryce.hamkrest.containsSubstring
 import com.natpryce.hamkrest.equalTo
 import com.natpryce.hamkrest.startsWith
 import io.github.gcapizzi.klient.http.OkHttp3Client
-import io.github.gcapizzi.klient.request.DataEncoder
 import io.github.gcapizzi.klient.request.DefaultRequestBuilder
 import io.github.gcapizzi.klient.request.JsonDataEncoder
 import io.github.gcapizzi.klient.response.DefaultResponseFormatter

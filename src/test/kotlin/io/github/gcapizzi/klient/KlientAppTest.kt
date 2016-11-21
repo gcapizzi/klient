@@ -21,7 +21,7 @@ class KlientAppTest {
     @Test
     fun itMakesAnHttpRequestAndReturnsTheResults() {
         val args = arrayOf("the", "cli", "args")
-        val request = HttpRequest("METHOD", "http://url")
+        val request = HttpRequest(HttpMethod.GET, "http://url")
         val response = HttpResponse(200, mapOf(), "body")
 
         given(requestBuilder.build(args)).willReturn(Result.Ok(request))
@@ -49,7 +49,7 @@ class KlientAppTest {
     @Test
     fun itReturnsAnErrorWhenTheHttpRequestFails() {
         val args = arrayOf("the", "cli", "args")
-        val request = HttpRequest("METHOD", "http://url")
+        val request = HttpRequest(HttpMethod.GET, "http://url")
 
         given(requestBuilder.build(args)).willReturn(Result.Ok(request))
         given(httpClient.call(request)).willReturn(Result.Error(Exception("ERROR!")))

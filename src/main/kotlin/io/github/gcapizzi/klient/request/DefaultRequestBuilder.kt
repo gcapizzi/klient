@@ -1,5 +1,6 @@
 package io.github.gcapizzi.klient.request
 
+import io.github.gcapizzi.klient.HttpMethod
 import io.github.gcapizzi.klient.http.HttpRequest
 import io.github.gcapizzi.klient.util.Result
 
@@ -9,7 +10,7 @@ class DefaultRequestBuilder : RequestBuilder {
             return Result.Error(Exception("Too few arguments"))
         }
 
-        val method = args[0]
+        val method = HttpMethod.valueOf(args[0])
         val url = args[1]
         val dataFields = args.drop(2)
         val body = buildBody(dataFields)

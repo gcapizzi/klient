@@ -4,7 +4,9 @@ import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import io.github.gcapizzi.klient.HttpMethod
 import io.github.gcapizzi.klient.util.Result
+import org.junit.Ignore
 import org.junit.Test
 
 class OkHttp3ClientTest {
@@ -12,7 +14,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAGetRequest() {
-        val response = okHttpClient.call(HttpRequest("GET", "http://httpbin.org/get")).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.GET, "http://httpbin.org/get")).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
@@ -22,7 +24,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itUsesHttpAsTheDefaultSchema() {
-        val response = okHttpClient.call(HttpRequest("GET", "httpbin.org/get")).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.GET, "httpbin.org/get")).unwrap()
 
         val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
@@ -30,7 +32,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itSupportsAddressesStartingWithADoubleSlash() {
-        val response = okHttpClient.call(HttpRequest("GET", "//httpbin.org/get")).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.GET, "//httpbin.org/get")).unwrap()
 
         val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
@@ -38,19 +40,28 @@ class OkHttp3ClientTest {
 
     @Test
     fun itReturnsAnErrorIfTheUrlIsInvalid() {
-        val error = okHttpClient.call(HttpRequest("GET", "foo:bar.com")) as? Result.Error
+        val error = okHttpClient.call(HttpRequest(HttpMethod.GET, "foo:bar.com")) as? Result.Error
         assertThat(error!!.value.message, equalTo("Invalid URL"))
     }
 
     @Test
     fun itReturnsAnErrorIfTheRequestFails() {
-        val error = okHttpClient.call(HttpRequest("GET", "foo")) as? Result.Error
+        val error = okHttpClient.call(HttpRequest(HttpMethod.GET, "foo")) as? Result.Error
         assertThat(error!!.value.message, equalTo("Error executing the HTTP request: foo: unknown error"))
     }
 
     @Test
+    @Ignore("OkHttp bug, see https://github.com/square/okhttp/issues/2998")
+    fun itExecutesAHeadRequest() {
+        val response = okHttpClient.call(HttpRequest(HttpMethod.HEAD, "http://httpbin.org/get")).unwrap()
+
+        assertThat(response.status, equalTo(200))
+        assertThat(response.body, equalTo(""))
+    }
+
+    @Test
     fun itExecutesAPostRequest() {
-        val response = okHttpClient.call(HttpRequest("POST", "http://httpbin.org/post", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.POST, "http://httpbin.org/post", mapOf("foo" to "bar"))).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
@@ -61,7 +72,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAPostRequestWithEmptyBody() {
-        val response = okHttpClient.call(HttpRequest("POST", "http://httpbin.org/post")).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.POST, "http://httpbin.org/post")).unwrap()
 
         assertThat(response.status, equalTo(200))
         val parsedOutput = parseJson(response.body)
@@ -70,7 +81,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAPutRequest() {
-        val response = okHttpClient.call(HttpRequest("PUT", "http://httpbin.org/put", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.PUT, "http://httpbin.org/put", mapOf("foo" to "bar"))).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
@@ -81,7 +92,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesAPatchRequest() {
-        val response = okHttpClient.call(HttpRequest("PATCH", "http://httpbin.org/patch", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.PATCH, "http://httpbin.org/patch", mapOf("foo" to "bar"))).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
@@ -92,7 +103,7 @@ class OkHttp3ClientTest {
 
     @Test
     fun itExecutesADeleteRequest() {
-        val response = okHttpClient.call(HttpRequest("DELETE", "http://httpbin.org/delete", mapOf("foo" to "bar"))).unwrap()
+        val response = okHttpClient.call(HttpRequest(HttpMethod.DELETE, "http://httpbin.org/delete", mapOf("foo" to "bar"))).unwrap()
 
         assertThat(response.status, equalTo(200))
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))

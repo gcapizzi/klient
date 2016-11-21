@@ -1,6 +1,7 @@
 package io.github.gcapizzi.klient.http
 
 import com.beust.klaxon.JsonObject
+import io.github.gcapizzi.klient.HttpMethod
 import io.github.gcapizzi.klient.util.Result
 import okhttp3.*
 
@@ -18,12 +19,12 @@ class OkHttp3Client : HttpClient {
     private fun buildOkHttpRequest(request: HttpRequest): Result<Request> {
         return normalizeUrl(request.url).andThen { url ->
             val okHttpRequest = when (request.method) {
-                "GET" -> Request.Builder().get()
-                "POST" -> Request.Builder().post(jsonRequestBody(request.body))
-                "PUT" -> Request.Builder().put(jsonRequestBody(request.body))
-                "PATCH" -> Request.Builder().patch(jsonRequestBody(request.body))
-                "DELETE" -> Request.Builder().delete(jsonRequestBody(request.body))
-                else -> Request.Builder()
+                HttpMethod.GET -> Request.Builder().get()
+                HttpMethod.HEAD -> Request.Builder().head()
+                HttpMethod.POST -> Request.Builder().post(jsonRequestBody(request.body))
+                HttpMethod.PUT -> Request.Builder().put(jsonRequestBody(request.body))
+                HttpMethod.PATCH -> Request.Builder().patch(jsonRequestBody(request.body))
+                HttpMethod.DELETE -> Request.Builder().delete(jsonRequestBody(request.body))
             }.url(url).build()
 
             Result.Ok(okHttpRequest)

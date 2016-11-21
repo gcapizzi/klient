@@ -15,22 +15,23 @@ class OkHttp3Client : HttpClient {
         }
     }
 
-    private fun executeOkHttpRequest(okHttpRequest: Request): Result<Response> {
-        try {
-            return Result.Ok(client.newCall(okHttpRequest).execute())
-        } catch (e: Exception) {
-            return Result.Error(Exception("Error executing the HTTP request: ${e.message}"))
+    private fun buildOkHttpRequest(request: HttpRequest): Result<Request> {
+        return normalizeUrl(request.url).andThen { url ->
+            val okHttpRequest = when (request.method) {
+                "GET" -> Request.Builder().get()
+                "POST" -> Request.Builder().post(jsonRequestBody(request.body))
+                "PUT" -> Request.Builder().put(jsonRequestBody(request.body))
+                "PATCH" -> Request.Builder().patch(jsonRequestBody(request.body))
+                "DELETE" -> Request.Builder().delete(jsonRequestBody(request.body))
+                else -> Request.Builder()
+            }.url(url).build()
+
+            Result.Ok(okHttpRequest)
         }
     }
 
-    private fun buildOkHttpRequest(request: HttpRequest): Result<Request> {
-        return normalizeUrl(request.url).map { url ->
-            if (request.method == "GET") {
-                buildGetOkHttpRequest(url)
-            } else {
-                buildPostOkHttpRequest(url, request.body)
-            }
-        }
+    private fun jsonRequestBody(body: Map<String, String>?): RequestBody? {
+        return RequestBody.create(MediaType.parse("application/json"), toJson(body))
     }
 
     private fun normalizeUrl(url: String): Result<HttpUrl> {
@@ -38,23 +39,16 @@ class OkHttp3Client : HttpClient {
         return Result.of(normalizedUrl, Exception("Invalid URL"))
     }
 
-    private fun buildGetOkHttpRequest(url: HttpUrl): Request {
-        return Request.Builder()
-                .url(url)
-                .get()
-                .build()
-    }
-
-    private fun buildPostOkHttpRequest(url: HttpUrl, body: Map<String, String>?): Request {
-        val requestBody = RequestBody.create(MediaType.parse("application/json"), toJson(body))
-        return Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build()
-    }
-
     private fun toJson(body: Map<String, String>?): String {
-        return JsonObject(body.orEmpty()).toJsonString()
+        return body?.let { JsonObject(body).toJsonString() } ?: ""
+    }
+
+    private fun executeOkHttpRequest(okHttpRequest: Request): Result<Response> {
+        try {
+            return Result.Ok(client.newCall(okHttpRequest).execute())
+        } catch (e: Exception) {
+            return Result.Error(Exception("Error executing the HTTP request: ${e.message}"))
+        }
     }
 
     private fun buildHttpResponse(okHttpResponse: Response): HttpResponse {

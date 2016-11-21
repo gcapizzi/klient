@@ -23,6 +23,7 @@ class OkHttp3ClientTest {
     @Test
     fun itUsesHttpAsTheDefaultSchema() {
         val response = okHttpClient.call(HttpRequest("GET", "httpbin.org/get")).unwrap()
+
         val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
     }
@@ -30,6 +31,7 @@ class OkHttp3ClientTest {
     @Test
     fun itSupportsAddressesStartingWithADoubleSlash() {
         val response = okHttpClient.call(HttpRequest("GET", "//httpbin.org/get")).unwrap()
+
         val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/get"))
     }
@@ -54,8 +56,49 @@ class OkHttp3ClientTest {
         assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
         val parsedOutput = parseJson(response.body)
         assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/post"))
-        val json = parsedOutput["json"] as JsonObject
-        assertThat(json["foo"] as String, equalTo("bar"))
+        assertThat(parsedOutput["json"] as JsonObject, equalTo(JsonObject(mapOf("foo" to "bar"))))
+    }
+
+    @Test
+    fun itExecutesAPostRequestWithEmptyBody() {
+        val response = okHttpClient.call(HttpRequest("POST", "http://httpbin.org/post")).unwrap()
+
+        assertThat(response.status, equalTo(200))
+        val parsedOutput = parseJson(response.body)
+        assertThat(parsedOutput["json"] as? JsonObject, equalTo<JsonObject?>(null))
+    }
+
+    @Test
+    fun itExecutesAPutRequest() {
+        val response = okHttpClient.call(HttpRequest("PUT", "http://httpbin.org/put", mapOf("foo" to "bar"))).unwrap()
+
+        assertThat(response.status, equalTo(200))
+        assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
+        val parsedOutput = parseJson(response.body)
+        assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/put"))
+        assertThat(parsedOutput["json"] as JsonObject, equalTo(JsonObject(mapOf("foo" to "bar"))))
+    }
+
+    @Test
+    fun itExecutesAPatchRequest() {
+        val response = okHttpClient.call(HttpRequest("PATCH", "http://httpbin.org/patch", mapOf("foo" to "bar"))).unwrap()
+
+        assertThat(response.status, equalTo(200))
+        assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
+        val parsedOutput = parseJson(response.body)
+        assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/patch"))
+        assertThat(parsedOutput["json"] as JsonObject, equalTo(JsonObject(mapOf("foo" to "bar"))))
+    }
+
+    @Test
+    fun itExecutesADeleteRequest() {
+        val response = okHttpClient.call(HttpRequest("DELETE", "http://httpbin.org/delete", mapOf("foo" to "bar"))).unwrap()
+
+        assertThat(response.status, equalTo(200))
+        assertThat(response.headers["content-type"]?.first(), equalTo("application/json"))
+        val parsedOutput = parseJson(response.body)
+        assertThat(parsedOutput["url"] as String, equalTo("http://httpbin.org/delete"))
+        assertThat(parsedOutput["json"] as JsonObject, equalTo(JsonObject(mapOf("foo" to "bar"))))
     }
 
     private fun parseJson(jsonString: String): JsonObject {

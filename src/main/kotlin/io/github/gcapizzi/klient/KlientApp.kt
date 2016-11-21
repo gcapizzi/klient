@@ -1,8 +1,8 @@
 package io.github.gcapizzi.klient
 
 import io.github.gcapizzi.klient.http.HttpClient
-import io.github.gcapizzi.klient.requestbuilder.RequestBuilder
-import io.github.gcapizzi.klient.responseformatter.ResponseFormatter
+import io.github.gcapizzi.klient.request.RequestBuilder
+import io.github.gcapizzi.klient.response.ResponseFormatter
 import io.github.gcapizzi.klient.util.Result
 
 class KlientApp(val httpClient: HttpClient, val requestBuilder: RequestBuilder, val responseFormatter: ResponseFormatter) {

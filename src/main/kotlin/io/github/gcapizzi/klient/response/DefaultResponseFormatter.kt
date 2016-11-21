@@ -1,4 +1,4 @@
-package io.github.gcapizzi.klient.responseformatter
+package io.github.gcapizzi.klient.response
 
 import io.github.gcapizzi.klient.http.HttpResponse
 

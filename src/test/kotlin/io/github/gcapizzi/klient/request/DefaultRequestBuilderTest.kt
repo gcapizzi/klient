@@ -1,4 +1,4 @@
-package io.github.gcapizzi.klient.requestbuilder
+package io.github.gcapizzi.klient.request
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo

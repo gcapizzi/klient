@@ -5,8 +5,8 @@ import com.natpryce.hamkrest.containsSubstring
 import com.natpryce.hamkrest.equalTo
 import com.natpryce.hamkrest.startsWith
 import io.github.gcapizzi.klient.http.OkHttp3Client
-import io.github.gcapizzi.klient.requestbuilder.DefaultRequestBuilder
-import io.github.gcapizzi.klient.responseformatter.DefaultResponseFormatter
+import io.github.gcapizzi.klient.request.DefaultRequestBuilder
+import io.github.gcapizzi.klient.response.DefaultResponseFormatter
 import org.junit.Test
 
 class KlientAppEndToEndTest {

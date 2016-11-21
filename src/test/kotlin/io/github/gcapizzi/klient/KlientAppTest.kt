@@ -5,8 +5,8 @@ import com.natpryce.hamkrest.equalTo
 import io.github.gcapizzi.klient.http.HttpClient
 import io.github.gcapizzi.klient.http.HttpRequest
 import io.github.gcapizzi.klient.http.HttpResponse
-import io.github.gcapizzi.klient.requestbuilder.RequestBuilder
-import io.github.gcapizzi.klient.responseformatter.ResponseFormatter
+import io.github.gcapizzi.klient.request.RequestBuilder
+import io.github.gcapizzi.klient.response.ResponseFormatter
 import io.github.gcapizzi.klient.util.Result
 import org.junit.Test
 import org.mockito.BDDMockito.given

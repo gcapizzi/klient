@@ -22,11 +22,11 @@ class DefaultRequestBuilder(val dataEncoder: DataEncoder) : RequestBuilder {
             return null
         }
 
-        val dataMap = dataFields.map { buildPair(it) }.toMap()
+        val dataMap = dataFields.map { parseDataField(it) }.toMap()
         return dataEncoder.encode(dataMap)
     }
 
-    private fun buildPair(string: String): Pair<String, String> {
+    private fun parseDataField(string: String): Pair<String, String> {
         val (key, value) = string.split("=")
         return Pair(key, value)
     }

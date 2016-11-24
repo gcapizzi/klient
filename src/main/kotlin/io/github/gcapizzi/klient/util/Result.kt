@@ -10,6 +10,7 @@ sealed class Result<out T> {
         override fun <V> andThen(f: (T) -> Result<V>): Result<V> = f(value)
         override fun unwrap() = value
         override fun toString() = "Ok($value)"
+        override fun equals(other: Any?): Boolean = other is Result.Ok<*> && other.value == value
     }
 
     class Error<out T>(val value: Throwable) : Result<T>() {
@@ -17,6 +18,7 @@ sealed class Result<out T> {
         override fun <V> andThen(f: (T) -> Result<V>): Result<V> = Error(value)
         override fun unwrap() = throw value
         override fun toString() = "Error($value)"
+        override fun equals(other: Any?): Boolean = other is Result.Error<*> && other.value == value
     }
 
     companion object {

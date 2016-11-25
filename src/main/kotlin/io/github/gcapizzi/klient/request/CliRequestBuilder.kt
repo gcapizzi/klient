@@ -4,7 +4,7 @@ import io.github.gcapizzi.klient.http.HttpMethod
 import io.github.gcapizzi.klient.http.HttpRequest
 import io.github.gcapizzi.klient.util.Result
 
-class DefaultRequestBuilder(val dataEncoder: DataEncoder) : RequestBuilder {
+class CliRequestBuilder(val dataEncoder: DataEncoder) : RequestBuilder {
     override fun build(args: Array<String>): Result<HttpRequest> {
         if (args.size < 2) {
             return Result.Error(Exception("Too few arguments"))

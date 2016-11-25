@@ -7,7 +7,7 @@ import com.natpryce.hamkrest.containsSubstring
 import com.natpryce.hamkrest.equalTo
 import com.natpryce.hamkrest.startsWith
 import io.github.gcapizzi.klient.http.OkHttp3Client
-import io.github.gcapizzi.klient.request.DefaultRequestBuilder
+import io.github.gcapizzi.klient.request.CliRequestBuilder
 import io.github.gcapizzi.klient.request.JsonDataEncoder
 import io.github.gcapizzi.klient.response.DefaultResponseFormatter
 import org.junit.Test
@@ -15,7 +15,7 @@ import org.junit.Test
 class KlientAppEndToEndTest {
     private val httpClient = OkHttp3Client()
     private val dataEncoder = JsonDataEncoder()
-    private val requestBuilder = DefaultRequestBuilder(dataEncoder)
+    private val requestBuilder = CliRequestBuilder(dataEncoder)
     private val responseFormatter = DefaultResponseFormatter()
     private val klientApp = KlientApp(httpClient, requestBuilder, responseFormatter)
 

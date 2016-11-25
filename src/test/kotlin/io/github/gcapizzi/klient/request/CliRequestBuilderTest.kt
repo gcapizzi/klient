@@ -9,9 +9,9 @@ import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 
-class DefaultRequestBuilderTest {
+class CliRequestBuilderTest {
     private val dataEncoder = mock(DataEncoder::class.java)
-    private val requestBuilder = DefaultRequestBuilder(dataEncoder)
+    private val requestBuilder = CliRequestBuilder(dataEncoder)
 
     @Test
     fun itReturnsAnErrorIfTooFewArguments() {

@@ -6,15 +6,40 @@ import io.github.gcapizzi.klient.util.Result
 
 class CliRequestBuilder(val dataEncoder: DataEncoder) : RequestBuilder {
     override fun build(args: Array<String>): Result<HttpRequest> {
-        if (args.size < 2) {
+        if (args.isEmpty()) {
             return Result.Error(Exception("Too few arguments"))
         }
 
-        val method = HttpMethod.valueOf(args[0])
-        val url = args[1]
-        val dataFields = args.drop(2)
+        val method: HttpMethod
+        val url: String
+        val dataFields: List<String>
+
+        val maybeMethod = parseMethod(args[0])
+        if (maybeMethod == null) {
+            url = args[0]
+            dataFields = args.drop(1)
+            method = if (dataFields.isEmpty()) {
+                HttpMethod.GET
+            } else {
+                HttpMethod.POST
+            }
+        } else {
+            url = args[1]
+            dataFields = args.drop(2)
+            method = maybeMethod
+        }
+
         val body = buildBody(dataFields)
+
         return Result.Ok(HttpRequest(method, url, body))
+    }
+
+    private fun parseMethod(firstArg: String): HttpMethod? {
+        try {
+            return HttpMethod.valueOf(firstArg)
+        } catch (e: IllegalArgumentException) {
+            return null
+        }
     }
 
     private fun buildBody(dataFields: List<String>): String? {

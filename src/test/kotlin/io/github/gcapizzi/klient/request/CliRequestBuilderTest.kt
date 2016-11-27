@@ -14,12 +14,9 @@ class CliRequestBuilderTest {
     private val requestBuilder = CliRequestBuilder(dataEncoder)
 
     @Test
-    fun itReturnsAnErrorIfTooFewArguments() {
+    fun itReturnsAnErrorIfNoArguments() {
         val errorWithNoArgs = requestBuilder.build(arrayOf()) as? Result.Error
         assertThat(errorWithNoArgs!!.value.message, equalTo("Too few arguments"))
-
-        val errorWithOneArg = requestBuilder.build(arrayOf("GET")) as? Result.Error
-        assertThat(errorWithOneArg!!.value.message, equalTo("Too few arguments"))
     }
 
     @Test
@@ -29,14 +26,27 @@ class CliRequestBuilderTest {
     }
 
     @Test
+    fun itUsesGetAsTheDefaultMethodWhenNoDataFields() {
+        val httpRequest = requestBuilder.build(arrayOf("http://url")).unwrap()
+        assertThat(httpRequest, equalTo(HttpRequest(HttpMethod.GET, "http://url")))
+    }
+
+    @Test
     fun itAllowsToSpecifyDataFields() {
-        given(dataEncoder.encode(mapOf("foo" to "1", "bar" to "2", "baz" to "3"))).willReturn("JSON_ENCODED_DATA")
+        given(dataEncoder.encode(mapOf("foo" to "1", "bar" to "2", "baz" to "3"))).willReturn("ENCODED_DATA")
 
         val args = arrayOf("GET", "http://url", "foo=1", "bar=2", "baz=3")
         val httpRequest = requestBuilder.build(args).unwrap()
 
         assertThat(httpRequest.method, equalTo(HttpMethod.GET))
         assertThat(httpRequest.url, equalTo("http://url"))
-        assertThat(httpRequest.body, equalTo("JSON_ENCODED_DATA"))
+        assertThat(httpRequest.body, equalTo("ENCODED_DATA"))
+    }
+
+    @Test
+    fun itUsesPostAsTheDefaultMethodWhenDataFields() {
+        given(dataEncoder.encode(mapOf("foo" to "bar"))).willReturn("ENCODED_DATA")
+        val httpRequest = requestBuilder.build(arrayOf("http://url", "foo=bar")).unwrap()
+        assertThat(httpRequest, equalTo(HttpRequest(HttpMethod.POST, "http://url", "ENCODED_DATA")))
     }
 }
